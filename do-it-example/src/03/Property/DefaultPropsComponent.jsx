@@ -5,7 +5,7 @@ class DefaultPropsComponent extends Component {
     render() {
         let message1 = '';
         if(this.props.boolValue === false) {
-            message1 = 'boolValue 기본값이 false 입니다';
+            messaged1 = 'boolValue 기본값이 false 입니다';
         }
         let message2= '';
         if(this.props.boolValueWithoutDefault === false) {
