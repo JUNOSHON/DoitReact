@@ -1,50 +1,81 @@
-import React from 'react';
+import React, {PureComponent} from "react";
 import PropTypes from 'prop-types';
-import './button.css';
+import withStyles, {css} from './withStyles';
 
-/**
- * Primary UI component for user interaction
- */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
-  return (
-    <button
-      type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
-  );
-};
-
-Button.propTypes = {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary: PropTypes.bool,
-  /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
-  /**
-   * Button contents
-   */
-  label: PropTypes.string.isRequired,
-  /**
-   * Optional click handler
-   */
-  onClick: PropTypes.func,
-};
+class Button extends PureComponent {
+  render() {
+    const {
+      children,
+      disabled,
+      styles,
+      large,
+      xlarge,
+      small,
+      xsmall,
+      primary,
+      secondary,
+      onPress,
+    } = this.props;
+    return (
+      <button
+        {...css(
+          styles.default,
+          xsmall && styles.xsmall,
+          small && styles.small,
+          large && styles.large, 
+          xlarge && styles.xlarge,
+          secondary && styles.secondary,
+          primary && styles.primary,
+        )} 
+        onClick = {onPress} 
+      >
+        {children}
+      </button>
+    );
+  }
+}
 
 Button.defaultProps = {
-  backgroundColor: null,
+  onPress: () => {},
+  xsmall: false,
+  small: false,
+  large: false,
+  xlarge: false,
+  secondary: false,
   primary: false,
-  size: 'medium',
-  onClick: undefined,
+  
 };
+export default withStyles(({ color, size, unit})=> ({
+  default: {
+    border: 1,
+    borderStyle: 'solid',
+    borderColor: color.default,
+    borderRadius: 2,
+    color: color.default,
+    fontSize: size.md,
+    padding : unit *2,
+    cursor: 'pointer',
+  },
+  xlarge: {
+    fontSize: size.xg,
+  },
+  large: {
+    fontSize: size.lg,
+  },
+  small: {
+    fontSize: size.sm,
+  },
+  xsmall: {
+    fontSize: size.xs,
+    padding: unit,
+  },
+  primary: {
+    borderColor: color.primary,
+    color: color.white,
+    backgroundColor: color.primary,
+  },
+  secondary: {
+    borderColor: color.secondary,
+    color: color,secondary,
+  },
+}))(Button);
